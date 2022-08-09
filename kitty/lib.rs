@@ -101,7 +101,7 @@ mod kitty {
             contract.create_kitty(vec![1], 1, 1);
             
             let get_kitty = contract.get_kitty(accounts.alice);
-            let message = format!("thanks for instantiation {:?}", get_kitty);
+            let message = format!("get kitty {:?}", get_kitty);
             //ink_env::debug_println!(&message);
             assert_eq!(get_kitty , Ok(()));
         }
