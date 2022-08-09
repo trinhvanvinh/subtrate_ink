@@ -14,6 +14,7 @@ mod kitty {
     use scale::{Encode, Decode};
 
     #[derive(Debug, Clone, Encode, Decode, SpreadLayout, PackedLayout)]
+    #[derive(PartialEq)]
     #[cfg_attr(feature = "std", derive(::scale_info::TypeInfo, ::ink_storage::traits::StorageLayout))]
     pub enum Gender{
         Male, 
@@ -21,6 +22,7 @@ mod kitty {
     }
 
     #[derive(Debug, Clone, Encode, Decode, SpreadLayout, PackedLayout)]
+    #[derive(PartialEq)]
     #[cfg_attr(feature = "std", derive(::scale_info::TypeInfo, ::ink_storage::traits::StorageLayout))]
     pub struct DrawKitty {
         // Stores a single `bool` value on the storage.
@@ -66,8 +68,9 @@ mod kitty {
 
         // /// Simply returns the current value of our `bool`.
         #[ink(message)]
-        pub fn get_kitty(&self, accountId: AccountId) -> Option<DrawKitty>{
-            self.owner_kitty.get(accountId)
+        pub fn get_kitty(&self, accountId: AccountId) -> Result<(),()> {
+            self.owner_kitty.get(accountId);
+            Ok(())
         }
     }
 
@@ -89,13 +92,27 @@ mod kitty {
         //     assert_eq!(kitty.get(), false);
         // }
 
-        // /// We test a simple use case of our contract.
-        // #[ink::test]
-        // fn it_works() {
-        //     let mut kitty = Kitty::new(false);
-        //     assert_eq!(kitty.get(), false);
-        //     kitty.flip();
-        //     assert_eq!(kitty.get(), true);
-        // }
+        /// We test a simple use case of our contract.
+        #[ink::test]
+        fn create_kitty() {
+           let mut contract = Kitty::default();
+           let accounts = ink_env::test::default_accounts::<ink_env::DefaultEnvironment>();
+           let mut contract = Kitty::new();
+            contract.create_kitty(vec![1], 1, 1);
+            
+            let get_kitty = contract.get_kitty(accounts.alice);
+            let message = format!("thanks for instantiation {:?}", get_kitty);
+            //ink_env::debug_println!(&message);
+            assert_eq!(get_kitty , Ok(()));
+        }
+
+        #[ink::test]
+        fn get_kitty(){
+
+        }
+
+        //fn create_contract()
+
     }
+
 }
