@@ -2,35 +2,23 @@
 
 use ink_lang as ink;
 
-//use ink_storage::traits::SpreadAllocate;
-
 #[ink::contract]
-mod helloContract {
+mod kitty {
 
     /// Defines the storage of your contract.
     /// Add new fields to the below struct in order
     /// to add new static storage fields to your contract.
     #[ink(storage)]
-    //#[derive(SpreadAllocate)]
-    pub struct HelloContract {
+    pub struct Kitty {
         /// Stores a single `bool` value on the storage.
         value: bool,
-        
-        //map: ink_storage::Mapping<AccountId, u32>
     }
 
-    impl HelloContract {
+    impl Kitty {
         /// Constructor that initializes the `bool` value to the given `init_value`.
         #[ink(constructor)]
         pub fn new(init_value: bool) -> Self {
             Self { value: init_value }
-            //ink_lang::utils::initialize_contract(|contract: &mut Self|{
-               // let caller = Self::env().caller();
-               // contract.map.insert(&caller, &count);
-                
-            //})
-
-            
         }
 
         /// Constructor that initializes the `bool` value to `false`.
@@ -70,17 +58,17 @@ mod helloContract {
         /// We test if the default constructor does its job.
         #[ink::test]
         fn default_works() {
-            let helloContract = HelloContract::default();
-            assert_eq!(helloContract.get(), false);
+            let kitty = Kitty::default();
+            assert_eq!(kitty.get(), false);
         }
 
         /// We test a simple use case of our contract.
         #[ink::test]
         fn it_works() {
-            let mut helloContract = HelloContract::new(false);
-            assert_eq!(helloContract.get(), false);
-            helloContract.flip();
-            assert_eq!(helloContract.get(), true);
+            let mut kitty = Kitty::new(false);
+            assert_eq!(kitty.get(), false);
+            kitty.flip();
+            assert_eq!(kitty.get(), true);
         }
     }
 }
