@@ -68,9 +68,9 @@ mod kitty {
 
         // /// Simply returns the current value of our `bool`.
         #[ink(message)]
-        pub fn get_kitty(&self, accountId: AccountId) -> Result<(),()> {
-            self.owner_kitty.get(accountId);
-            Ok(())
+        pub fn get_kitty(&self, accountId: AccountId) -> Option<DrawKitty> {
+            self.owner_kitty.get(accountId)
+            
         }
     }
 
